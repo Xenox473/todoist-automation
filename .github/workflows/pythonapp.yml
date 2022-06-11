@@ -24,4 +24,3 @@ jobs:
         TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
       run: |
         python automate.py
-      with: { ref: main }
