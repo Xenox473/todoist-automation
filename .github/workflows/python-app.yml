@@ -28,5 +28,7 @@ jobs:
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Todoist automation
+      env:
+          TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
       run: |
         python automate.py
