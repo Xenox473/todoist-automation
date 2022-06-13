@@ -2,7 +2,7 @@ name: automate_todoist
 
 on:
   schedule:
-    - cron: '0 0 5 ? * SUN *'
+    - cron: '00 05 * * SUN'
 
 jobs:
   build:
