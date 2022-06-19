@@ -20,7 +20,7 @@ class Todoist(object):
     def get_token(self):
         token = os.getenv("TODOIST_API_KEY")
         if not token:
-            raise Exception("Please set the API token in environment variable.")
+            raise Exception("Please set the TODOIST API token in environment variable.")
         return token
     
     def get_label(self, label):
@@ -39,7 +39,7 @@ class Todoist(object):
         for task in this_week_tasks:
             Task(task).remove_label(this_week_label['id'])
             self.api.items.update(task['id'], **task.__dict__['data'])
-        self.api.commit()
+        self.api.commit()        
 
 def main():
     doist = Todoist()
