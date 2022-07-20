@@ -2,7 +2,7 @@ from googleapiclient.discovery import build
 from automate import *
 import re
 
-MIN_SCORE = 9
+MIN_SCORE = 6
 
 def create_task(title, score):
     doist = Todoist()
