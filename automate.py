@@ -34,7 +34,6 @@ class Todoist(object):
     def reset_this_week_label(self):
         this_week_label = self.get_label('This_Week')
         this_week_tasks = self.get_tasks_by_label(this_week_label)
-        this_week_tasks = list(filter(lambda task: task['due'] is None, this_week_tasks))
         print('Clearing {} tasks from next actions.'.format(len(this_week_tasks)))
         for task in this_week_tasks:
             Task(task).remove_label(this_week_label['id'])
