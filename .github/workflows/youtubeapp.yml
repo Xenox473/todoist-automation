@@ -1,4 +1,4 @@
-name: automate_todoist
+name: auto_album_recommender
 
 on:
   schedule:
