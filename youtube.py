@@ -6,6 +6,7 @@ MIN_SCORE = 7
 
 def create_task(title, score):
     doist = Todoist()
+    # TODO: Create this into a model, so that we can store constant variables
     albums_project_id = list(filter(lambda x: x['name'] == 'Albums to listen to', doist.api.projects.all()))[0]['id']
     title = title.replace(' ALBUM REVIEW', '')
     item_content = "[{}] {}".format(score, title)
@@ -90,6 +91,12 @@ def get_token():
 if __name__ == "__main__":
     api_key = get_token()
     youtube = build('youtube', 'v3', developerKey=api_key)
+    doist = Todoist()
+
+    # If a todoist project doesn't exist, create one
+    if not any(list(filter(lambda x: x['name'] == 'Albums to listen to', doist.api.projects.all()))):
+        doist.api.projects.add('Albums to listen to')
+        doist.api.commit()
 
     # Get channel_id for theneedledrop
     request = youtube.channels().list(
@@ -102,9 +109,9 @@ if __name__ == "__main__":
     # Get playlists
     playlists = fetch_playlists(channel_id, youtube)
 
-    # Add an option to select genre
+    # TODO: Add an option to select genre
 
-    # For a playlist return all the scores and videos that match the minimum score
+    # For a playlist add albums todoist that match the minimum score
     playlist_id = playlists['All Reviews']
     playlist_video_scores(playlist_id, youtube)
 
