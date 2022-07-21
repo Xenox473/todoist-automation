@@ -11,7 +11,7 @@ def create_task(title, score):
     item_content = "[{}] {}".format(score, title)
     project_items = list(filter(lambda x: x['project_id'] == albums_project_id, doist.api.items.all()))
     if any(filter(lambda x: x['content'] == item_content, project_items)):
-        return True
+        return False
     else:
         doist.api.add_item(item_content, project_id=albums_project_id)
         print("Created task for {}".format(title))
@@ -45,18 +45,16 @@ def playlist_video_scores(playlistId, youtube, album_limit=10):
             title = item['snippet']['title']
             description = item['snippet']['description']
             score = fetch_score(description)
-
             if score and int(score) >= MIN_SCORE:
-                create_task(title, score)
-                album_count += 1
+                if create_task(title, score):
+                    album_count += 1
 
         nextPageToken = pl_response.get('nextPageToken')
-        
         # Stop if we've reached the end
         if not nextPageToken:
             break
 
-def fetch_genres(channel_id, youtube):
+def fetch_playlists(channel_id, youtube):
     ch_request = youtube.channels().list(
             part='contentDetails',
             forUsername='theneedledrop',
@@ -66,7 +64,7 @@ def fetch_genres(channel_id, youtube):
 
     playlist_id = ch_response['items'][0]['contentDetails']['relatedPlaylists']['uploads']
 
-    genres = {'All Reviews': playlist_id}
+    playlists = {'All Reviews': playlist_id}
 
     pl_request = youtube.playlists().list(
             part='snippet',
@@ -79,9 +77,9 @@ def fetch_genres(channel_id, youtube):
         playlist_title = item['snippet']['title']
         playlist_id = item['id']
         if "Reviews" in playlist_title and "Weekly" not in playlist_title:
-            genres[playlist_title] = playlist_id
+            playlists[playlist_title] = playlist_id
 
-    return genres
+    return playlists
 
 def get_token():
     token = os.getenv("YOUTUBE_API_KEY")
@@ -101,13 +99,13 @@ if __name__ == "__main__":
     response = request.execute()
     channel_id = response['items'][0]['id']
 
-    # Get playlist genres
-    genres = fetch_genres(channel_id, youtube)
+    # Get playlists
+    playlists = fetch_playlists(channel_id, youtube)
 
     # Add an option to select genre
 
     # For a playlist return all the scores and videos that match the minimum score
-    playlist_id = genres['All Reviews']
+    playlist_id = playlists['All Reviews']
     playlist_video_scores(playlist_id, youtube)
 
     
