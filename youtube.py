@@ -25,7 +25,7 @@ def fetch_score(description):
     except:
         return None
 
-def playlist_video_scores(playlistId, youtube, album_limit=10):
+def playlist_video_scores(playlistId, youtube, album_limit=3):
     nextPageToken = None
     album_count = 0
     while album_count < album_limit:
