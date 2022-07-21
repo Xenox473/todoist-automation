@@ -21,6 +21,7 @@ jobs:
         pip install -r requirements.txt
     - name: Run todoist_automation
       env:
+        YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
       run: |
         python youtube.py
