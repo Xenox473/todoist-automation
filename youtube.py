@@ -2,7 +2,7 @@ from googleapiclient.discovery import build
 from automate import *
 import re
 
-MIN_SCORE = 6
+MIN_SCORE = 7
 
 def create_task(title, score):
     doist = Todoist()
@@ -27,10 +27,7 @@ def fetch_score(description):
 def playlist_video_scores(playlistId, youtube, album_limit=10):
     nextPageToken = None
     album_count = 0
-    while True:
-        # Check if we've hit the album limit
-        if album_count > album_limit:
-            break
+    while album_count < album_limit:
         # Retrieve youtube video results
         pl_request = youtube.playlistItems().list(
             part='snippet',
@@ -42,6 +39,9 @@ def playlist_video_scores(playlistId, youtube, album_limit=10):
   
         # Iterate through all response and get video description
         for item in pl_response['items']:
+            # Check if we've hit the album limit
+            if album_count >= album_limit:
+                break
             title = item['snippet']['title']
             description = item['snippet']['description']
             score = fetch_score(description)
