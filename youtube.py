@@ -11,7 +11,11 @@ def create_task(title, score):
     title = title.replace(' ALBUM REVIEW', '')
     item_content = "[{}] {}".format(score, title)
     project_items = list(filter(lambda x: x['project_id'] == albums_project_id, doist.api.items.all()))
-    if any(filter(lambda x: x['content'] == item_content, project_items)):
+    filt = filter(lambda x: x['content'] == item_content, project_items)
+    print(item_content)
+    print(project_items)
+    print(list(filt))
+    if any(filt):
         return False
     else:
         doist.api.add_item(item_content, project_id=albums_project_id)
