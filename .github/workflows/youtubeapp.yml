@@ -1,8 +1,8 @@
 name: auto_album_recommender
 
-on:
-  schedule:
-    - cron: '30 5 * * *'
+on: workflow_dispatch
+#   schedule:
+#     - cron: '30 5 * * *'
 
 jobs:
   build:
