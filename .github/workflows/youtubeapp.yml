@@ -2,7 +2,7 @@ name: auto_album_recommender
 
 on:
   schedule:
-    - cron: '30 05 * * 1'
+    - cron: '40 14 * * *'
 
 jobs:
   build:
