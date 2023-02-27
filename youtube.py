@@ -1,23 +1,24 @@
 from googleapiclient.discovery import build
-from automate import *
+from todoist_api_python.api import TodoistAPI
+
+import os
 import re
 
 MIN_SCORE = 7
 
 def create_task(title, score):
-    doist = Todoist()
+    doist = TodoistAPI(get_tokens()[0])
     # TODO: Create this into a model, so that we can store constant variables
-    albums_project_id = list(filter(lambda x: x['name'] == 'Albums to listen to', doist.api.projects.all()))[0]['id']
+    albums_project_id = list(filter(lambda x: x.name == 'Albums to listen to', doist.get_projects()))[0].id
     title = title.replace(' ALBUM REVIEW', '')
     item_content = "[{}] {}".format(score, title)
-    project_items = list(filter(lambda x: x['project_id'] == albums_project_id, doist.api.items.all()))
-    filt = list(filter(lambda x: x['content'] == item_content, project_items))
+    project_items = list(filter(lambda x: x.project_id == albums_project_id, doist.get_tasks()))
+    filt = list(filter(lambda x: x.content == item_content, project_items))
     
     if any(filt):
         return False
     else:
-        doist.api.add_item(item_content, project_id=albums_project_id)
-        doist.api.commit()
+        doist.add_task(item_content, project_id=albums_project_id)
         print("Created task for {}".format(title))
     return True
 
@@ -85,23 +86,22 @@ def fetch_playlists(channel_id, youtube):
 
     return playlists
 
-def get_token():
-    token = os.getenv("YOUTUBE_API_KEY")
-    if not token:
-        raise Exception("Please set the YOUTUBE API token in environment variable.")
-    return token
+def get_tokens():
+    td_token = os.getenv("TODOIST_API_KEY")
+    yt_token = os.getenv("YOUTUBE_API_KEY")
+    if not td_token or not yt_token:
+        raise Exception("Please set the YOUTUBE and TODOIST API token in environment variable.")
+    return td_token, yt_token
 
 if __name__ == "__main__":
-    api_key = get_token()
-    youtube = build('youtube', 'v3', developerKey=api_key)
-    doist = Todoist()
+    td_token, yt_token = get_tokens()
+    youtube = build('youtube', 'v3', developerKey=yt_token)
+    doist = TodoistAPI(td_token)
 
     # If a todoist project doesn't exist, create one
-    print("Hello")
-    if not any(list(filter(lambda x: x['name'] == 'Albums to listen to', doist.api.projects.all()))):
-        doist.api.projects.add('Albums to listen to')
+    if not any(list(filter(lambda x: x.name == 'Albums to listen to', doist.get_projects()))):
+        doist.add_project(name='Albums to listen to')
         print("Created Albums to listen to project")
-        doist.api.commit()
 
     # Get channel_id for theneedledrop
     request = youtube.channels().list(
@@ -111,12 +111,12 @@ if __name__ == "__main__":
     response = request.execute()
     channel_id = response['items'][0]['id']
 
-    # Get playlists
+    # # Get playlists
     playlists = fetch_playlists(channel_id, youtube)
 
-    # TODO: Add an option to select genre
+    # # TODO: Add an option to select genre
 
-    # For a playlist add albums todoist that match the minimum score
+    # # For a playlist add albums todoist that match the minimum score
     playlist_id = playlists['All Reviews']
     playlist_video_scores(playlist_id, youtube)
 
