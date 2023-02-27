@@ -17,6 +17,7 @@ def create_task(title, score):
         return False
     else:
         doist.api.add_item(item_content, project_id=albums_project_id)
+        doist.api.commit()
         print("Created task for {}".format(title))
     return True
 
@@ -96,8 +97,10 @@ if __name__ == "__main__":
     doist = Todoist()
 
     # If a todoist project doesn't exist, create one
+    print("Hello")
     if not any(list(filter(lambda x: x['name'] == 'Albums to listen to', doist.api.projects.all()))):
         doist.api.projects.add('Albums to listen to')
+        print("Created Albums to listen to project")
         doist.api.commit()
 
     # Get channel_id for theneedledrop
