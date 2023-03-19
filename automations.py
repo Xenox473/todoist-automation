@@ -1,3 +1,5 @@
+import random
+
 from datetime import datetime, timedelta
 from todoist_api_python.api import TodoistAPI
 from dotenv import dotenv_values
@@ -20,10 +22,21 @@ def review_tasks(api, today):
                         return True
         return False
     
-    tasks = list(filter(lambda x: task_filter(x), api.get_tasks()))[0:5]
+    tasks = list(filter(lambda x: task_filter(x), api.get_tasks()))
+    # Select five random tasks
+    tasks = random.sample(tasks, 3)
+
     for task in tasks:
         task.labels.append('Review')
         api.update_task(task_id=task.id, labels=task.labels)
+
+def reset_priorities(api, today):
+    # Get all tasks that have a priority
+    tasks = list(filter(lambda x: x.priority != 1 and x.due is not None and x.due.date == today.strftime("%Y-%m-%d"), api.get_tasks()))
+
+    for task in tasks:
+        api.update_task(task_id=task.id, priority=1)
+    return True
 
 if __name__ == "__main__":
     secrets = dotenv_values("secrets.env")
@@ -44,3 +57,6 @@ if __name__ == "__main__":
 
     # Review tasks every other 
     review_tasks(api, today)
+
+    # Reset priorities for tasks due today
+    reset_priorities(api, today)
