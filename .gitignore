@@ -1,2 +1,6 @@
-# Ignore env files
-*.env
+# Ignore secrets.env file
+secrets.env
+# Ignore credentials.json file
+credentials.json
+# Ignore token.json file
+token.json
