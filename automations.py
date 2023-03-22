@@ -1,4 +1,5 @@
 import random
+import os
 
 from datetime import datetime, timedelta
 from todoist_api_python.api import TodoistAPI
@@ -39,7 +40,11 @@ def reset_priorities(api, today):
     return True
 
 if __name__ == "__main__":
-    secrets = dotenv_values("secrets.env")
+    # If secrets.env exists, load it. Else, load environment variables
+    if os.path.exists("secrets.env"):
+        secrets = dotenv_values("secrets.env")
+    else:
+        secrets = os.environ
 
     # Retrieve API token from environment variable
     token = secrets.get("TODOIST_API_KEY")
