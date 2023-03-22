@@ -42,13 +42,9 @@ def reset_priorities(api, today):
 if __name__ == "__main__":
     # If secrets.env exists, load it. Else, load environment variables
     if os.path.exists("secrets.env"):
-        secrets = dotenv_values("secrets.env")
+        token = dotenv_values("secrets.env").get("TODOIST_API_KEY")
     else:
-        secrets = os.environ
-
-    print(secrets)
-    # Retrieve API token from environment variable
-    token = secrets.get("TODOIST_API_KEY")
+        token = os.environ.get("TODOIST_API_KEY")
     
     if not token:
         raise Exception("Please set the TODOIST API token in environment variable.")
