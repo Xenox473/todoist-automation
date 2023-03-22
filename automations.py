@@ -46,6 +46,7 @@ if __name__ == "__main__":
     else:
         secrets = os.environ
 
+    print(secrets)
     # Retrieve API token from environment variable
     token = secrets.get("TODOIST_API_KEY")
     
@@ -60,7 +61,7 @@ if __name__ == "__main__":
     if day == 6:
         reset_this_week(api)
 
-    # Review tasks every other 
+    # Review tasks
     review_tasks(api, today)
 
     # Reset priorities for tasks due today
