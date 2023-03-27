@@ -48,8 +48,9 @@ class SyncReclaim():
         else: 
             reclaim_task.duration = 0.5
 
-        reclaim_task.min_work_duration = 0.15
-        reclaim_task.max_work_duration = 2
+        # reclaim_task.min_work_duration = 1
+        # reclaim_task.max_work_duration = 2
+
         reclaim_task.description = todoist_task.id
         
         reclaim_task.priority = todoist_task.priority
@@ -84,7 +85,7 @@ class SyncReclaim():
     
     def grab_todoist_tasks(self):
         # Grab all tasks that are non recurring tasks and have a due date that is not today
-        tasks = list(filter(lambda x: x.due is not None and x.due.date != self.today.strftime("%Y-%m-%d") and x.due.is_recurring is False and x.project_id != self.timeblocking.id, self.todoist_api.get_tasks()))
+        tasks = list(filter(lambda x: x.due is not None and x.due.is_recurring is False and x.project_id != self.timeblocking.id, self.todoist_api.get_tasks()))
         # Grab all tasks that do not have a due date but have a priority
         tasks += list(filter(lambda x: x.due is None and x.priority > 1 and x.parent_id is None, self.todoist_api.get_tasks()))
         return tasks
@@ -111,10 +112,10 @@ class SyncReclaim():
         self.cleanup_reclaim_tasks(reclaim_tasks, todoist_tasks)
 
         for task in todoist_tasks:
-            if task.content not in map(lambda x: x.name, reclaim_tasks):
+            if task.id not in map(lambda x: x.description, reclaim_tasks):
                 self.create_reclaim_task(task)
             else:
-                reclaim_task = list(filter(lambda x: x.name == task.content, reclaim_tasks))[0]
+                reclaim_task = list(filter(lambda x: x.description == task.id, reclaim_tasks))[0]
                 self.create_reclaim_task(task, reclaim_task)
         return
 
