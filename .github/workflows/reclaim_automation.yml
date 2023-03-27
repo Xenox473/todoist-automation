@@ -2,7 +2,7 @@ name: todoist_automations
 
 on:
   schedule:
-    - cron: '0 0 * ? * * *'
+    - cron: '00 * ? * *'
 
 jobs:
   build:
