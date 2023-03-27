@@ -149,8 +149,12 @@ def fetch_playlists(channel_id, youtube):
     return playlists
 
 def get_tokens():
-    # load the environment variables from the .env file
-    secrets = dotenv_values("secrets.env")
+    # If secrets.env exists, load it. Else, load environment variables
+    if os.path.exists("secrets.env"):
+        secrets = dotenv_values("secrets.env")
+    else:
+        secrets = os.environ
+
     td_token = secrets["TODOIST_API_KEY"]
     yt_token = secrets["YOUTUBE_API_KEY"]
 

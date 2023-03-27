@@ -1,8 +1,8 @@
-name: automations
+name: todoist_automations
 
 on:
   schedule:
-    - cron: '00 5 * * *'
+    - cron: '0 0 * ? * * *'
 
 jobs:
   build:
@@ -22,5 +22,6 @@ jobs:
     - name: Run todoist_automation
       env:
         TODOIST_API_KEY: ${{ secrets.TODOIST_API_KEY }}
+        RECLAIM_TOKEN: ${{ secrets.RECLAIM_TOKEN }}
       run: |
-        python automations.py
+        python automations.py reclaim
