@@ -1,4 +1,4 @@
-name: todoist_automations
+name: reclaim_automations
 
 on:
   schedule:
