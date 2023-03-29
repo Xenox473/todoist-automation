@@ -95,13 +95,16 @@ class SyncReclaim():
         for task in reclaim_tasks:
             if task.description not in map(lambda x: x.id, todoist_tasks):
                 # Mark tasks as completed in Reclaim if they are completed in Todoist
-                todoist_task = self.todoist_api.get_task(task.description)
-                if todoist_task is not None and todoist_task.is_completed:
-                    task.mark_complete()
-                    print("Completed Reclaim task: " + task.name)
-                else:
-                    print("Deleted Reclaim task: " + task.name)
-                    task.delete()
+                try:
+                    todoist_task = self.todoist_api.get_task(task.description)
+                    if todoist_task.is_completed:
+                        task.mark_complete()
+                        print("Completed Reclaim task: " + task.name)
+                except:
+                    pass
+
+                print("Deleted Reclaim task: " + task.name)
+                task.delete()
         return
     
     def sync(self):

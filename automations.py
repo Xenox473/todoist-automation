@@ -121,6 +121,9 @@ if __name__ == "__main__":
 
         # Review tasks
         review_tasks(api, today)
+        # Reset priorities
+        reset_priorities(api, today)
+        
     elif arg == "reclaim":
         reclaim = SyncReclaim(api)
         reclaim.sync()
