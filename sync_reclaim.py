@@ -30,7 +30,6 @@ class SyncReclaim():
         
     def create_reclaim_task(self, todoist_task, reclaim_task = None):
         meassage = "Updated" if reclaim_task is not None else "Created"
-
         if reclaim_task is None:
             reclaim_task = ReclaimTask()
 

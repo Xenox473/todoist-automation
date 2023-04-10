@@ -24,6 +24,11 @@ def get_creds():
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
+
+    if os.path.exists('token.json.gpg'):
+        # Decrypt the file
+        os.system('gpg --quiet --batch --yes --decrypt --passphrase="$GPG_PASSPHRASE" --output token.json token.json.gpg')
+
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
     # If there are no (valid) credentials available, let the user log in.
