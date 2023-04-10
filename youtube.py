@@ -25,17 +25,16 @@ def get_creds():
     # created automatically when the authorization flow completes for the first
     # time.
 
-    if os.path.exists('token.json.gpg'):
+    if os.path.exists('credentials/token.json.gpg'):
         # Decrypt the file
         print("Decrypting token.json.gpg")
-        os.system('gpg --quiet --batch --yes --decrypt --passphrase="$GPG_PASSPHRASE" --output token.json token.json.gpg')
+        os.system('gpg --quiet --batch --yes --decrypt --passphrase="$GPG_PASSPHRASE" --output token.json credentials/token.json.gpg')
 
-    if os.path.exists('credentials.json.gpg'):
+    if os.path.exists('credentials/credentials.json.gpg'):
         # Decrypt the file
         print("Decrypting credentials.json.gpg")
-        os.system('gpg --quiet --batch --yes --decrypt --passphrase="$GPG_PASSPHRASE" --output credentials.json credentials.json.gpg')
+        os.system('gpg --quiet --batch --yes --decrypt --passphrase="$GPG_PASSPHRASE" --output credentials.json credentials/credentials.json.gpg')
 
-    print("File Check: ", os.path.exists('/secrets/credentials.json'))
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
     # If there are no (valid) credentials available, let the user log in.
