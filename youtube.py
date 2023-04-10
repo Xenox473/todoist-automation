@@ -27,7 +27,13 @@ def get_creds():
 
     if os.path.exists('token.json.gpg'):
         # Decrypt the file
+        print("Decrypting token.json.gpg")
         os.system('gpg --quiet --batch --yes --decrypt --passphrase="$GPG_PASSPHRASE" --output token.json token.json.gpg')
+
+    if os.path.exists('credentials.json.gpg'):
+        # Decrypt the file
+        print("Decrypting credentials.json.gpg")
+        os.system('gpg --quiet --batch --yes --decrypt --passphrase="$GPG_PASSPHRASE" --output credentials.json credentials.json.gpg')
 
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
