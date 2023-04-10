@@ -35,7 +35,7 @@ def get_creds():
         print("Decrypting credentials.json.gpg")
         os.system('gpg --quiet --batch --yes --decrypt --passphrase="$GPG_PASSPHRASE" --output credentials.json credentials.json.gpg')
 
-    print(os.path.exists('credentials.json'))
+    print(os.path.exists('/secrets/credentials.json'))
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
     # If there are no (valid) credentials available, let the user log in.
