@@ -99,11 +99,11 @@ class SyncReclaim():
                     if todoist_task.is_completed:
                         task.mark_complete()
                         print("Completed Reclaim task: " + task.name)
+                    else:
+                        print("Deleted Reclaim task: " + task.name)
+                        task.delete()
                 except:
                     pass
-
-                print("Deleted Reclaim task: " + task.name)
-                task.delete()
         return
     
     def sync(self):
