@@ -19,6 +19,7 @@ class SyncReclaim():
         self.timeblocking = list(filter(lambda x: x.name == "Timeblocking", self.projects))[0]
         self.personal = list(filter(lambda x: x.name == "Personal", self.projects))[0]
         self.school = list(filter(lambda x: x.name == "School", self.projects))[0]
+        self.ddhq = list(filter(lambda x: x.name == "DDHQ", self.projects))[0]
 
     def get_root_project_id(self, task):
         project_id = task.project_id
@@ -55,7 +56,7 @@ class SyncReclaim():
         reclaim_task.priority = todoist_task.priority
 
         project_id = self.get_root_project_id(todoist_task)
-        reclaim_task.is_work_task = project_id == self.school.id
+        reclaim_task.is_work_task = project_id in [self.school.id, self.ddhq.id]
 
         if todoist_task.due is not None:
             reclaim_task.due_date = datetime.strptime(todoist_task.due.date, "%Y-%m-%d") + timedelta(days=1)
