@@ -24,7 +24,7 @@ class SyncReclaim():
     def get_root_project_id(self, task):
         project_id = task.project_id
         while True:
-            if project_id in [self.timeblocking.id, self.personal.id, self.school.id]:
+            if project_id in [self.timeblocking.id, self.personal.id, self.school.id, self.ddhq.id]:
                 return project_id
             else:
                 project_id = list(filter(lambda x: x.id == project_id, self.projects))[0].parent_id
