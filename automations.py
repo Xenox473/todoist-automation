@@ -70,6 +70,21 @@ if __name__ == "__main__":
         reset_priorities(api, today)
         
     elif arg == "reclaim":
-        reclaim = SyncReclaim(api)
-        reclaim.sync()
+        try:
+            reclaim = SyncReclaim(api)
+            reclaim.sync()
+        except Exception as e:
+            task_content = "Fix Reclaim Sync"
+            tasks = list(filter(lambda x: x.content == task_content, api.get_tasks()))
+            if len(tasks) == 0:
+                task = api.add_task(
+                    content=task_content,
+                    due_string="today",
+                    due_lang="en",
+                    description=f"Error: {e}",
+                    priority=3
+                )
+                print(task)
+            else:
+                print("Task already exists")
         # reclaim.delete_tasks()
