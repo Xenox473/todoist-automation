@@ -11,7 +11,7 @@ def reset_this_week(api):
     ## Get all tasks associated with the label
     tasks = list(filter(lambda x: 'This_Week' in x.labels, api.get_tasks()))
     for task in tasks:
-        api.update_task(task_id=task.id, labels=list(filter(lambda x: x != "This_Week", task.labels)))
+        api.update_task(task_id=task.id, labels=list(filter(lambda x: x != "This_Week", task.labels)) + ["Next_Week"])
     return True
 
 def review_tasks(api, today):
