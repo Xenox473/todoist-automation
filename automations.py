@@ -63,9 +63,9 @@ if __name__ == "__main__":
         # Reset This_Week label if Sunday
         if day == 6:
             reset_this_week(api)
+            # Review tasks
+            # review_tasks(api, today)
 
-        # Review tasks
-        review_tasks(api, today)
         # Reset priorities
         reset_priorities(api, today)
         
@@ -87,4 +87,5 @@ if __name__ == "__main__":
                 print(task)
             else:
                 print("Task already exists")
+                print(e)
         # reclaim.delete_tasks()
